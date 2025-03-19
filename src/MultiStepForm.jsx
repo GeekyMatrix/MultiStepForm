@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import InputField from "./InputField";
 
 const MultiStepForm = () => {
-  const [step, setStep] = useState(1); // State for Managing Form Steps
+  const [step, setStep] = useState(1);
 
-  // State for Storing Form Data(formData stores the values of all form fields)
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -13,12 +13,10 @@ const MultiStepForm = () => {
     phone: "",
   });
 
-  //State for Validation Errors
-  const [errors, setErrors] = useState({}); //errors stores validation messages for each field.
+  const [errors, setErrors] = useState({});
 
-  // Validation Function
   const validate = () => {
-    let newErrors = {}; //Empty object to Store validation messages
+    let newErrors = {};
 
     if (!/^[A-Za-z]+$/.test(formData.firstName)) {
       newErrors.firstName = "First Name must contain only letters";
@@ -36,27 +34,22 @@ const MultiStepForm = () => {
       newErrors.email = "Invalid email format";
     }
 
-    //Updating the Errors State
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  //Handling the Input Changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  //For Next Page
   const nextStep = () => {
     if (validate()) setStep(step + 1);
   };
 
-  //For Previous Page
   const prevStep = () => {
     setStep(step - 1);
   };
 
-  //Submitting the Form
   const handleSubmit = () => {
     if (validate()) {
       alert("Form Submitted Successfully!");
@@ -132,6 +125,7 @@ const MultiStepForm = () => {
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
+            type="email"
           />
           <InputField
             label="Phone"
@@ -139,6 +133,7 @@ const MultiStepForm = () => {
             value={formData.phone}
             onChange={handleChange}
             error={errors.phone}
+            type="tel"
           />
           <div className="d-flex justify-content-between">
             <button onClick={prevStep} className="btn btn-secondary">
@@ -154,21 +149,6 @@ const MultiStepForm = () => {
   );
 };
 
-// Reusable Input Field Component
-const InputField = ({ label, name, value, onChange, error }) => (
-  <div className="mb-3">
-    <label className="form-label">{label}</label>
-    <input
-      type="text"
-      name={name}
-      placeholder={label}
-      value={value}
-      onChange={onChange}
-      className="form-control"
-    />
-    {error && <div className="text-danger small">{error}</div>}
-  </div>
-);
-
 export default MultiStepForm;
+
 
